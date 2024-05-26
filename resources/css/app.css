@@ -1,0 +1,23 @@
+.default-background-color {
+    background-color: rgb(219 219 219);
+}
+
+.card-header {
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+.main-footer {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    bottom: 0;
+    width: 100%;
+    min-height: 50px;
+}
+
+.task-card {
+    padding: 12px;
+    margin-bottom: 50px;
+}

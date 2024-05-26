@@ -23,6 +23,7 @@ use App\Http\Controllers\TasksController;
 
 Route::prefix('auth/v1')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
 
 Route::middleware('auth:sanctum')->group(function () {

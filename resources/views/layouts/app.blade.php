@@ -14,11 +14,15 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/js/sidebar.js'])
+
+    <!-- Styles -->
+    @vite(['resources/css/app.css', 'resources/css/sidebar.css'])
+
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <!--<nav class="navbar navbar-expand-md default-background-color shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -28,14 +32,13 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
+
                     <ul class="navbar-nav me-auto">
 
                     </ul>
 
-                    <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
+
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
@@ -70,11 +73,98 @@
                     </ul>
                 </div>
             </div>
-        </nav>
+        </nav>-->
 
-        <main class="py-4">
+        <div class="wrapper">
+            <aside id="sidebar">
+                <div class="d-flex">
+                    <button id="toggle-btn" type="button">
+                        <img src="{{ asset('/storage/img/grid-alt.svg') }}">
+                    </button>
+
+                    <div class="sidebar-logo">
+                        <a href="#">
+                            {{ config('app.name', 'Laravel') }}
+                        </a>
+                    </div>
+                </div>
+
+                <ul class="sidebar-nav">
+
+                    <li class="sidebar-item">
+
+                        <a href="#" class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" data-bs-target="#home" aria-expanded="false" aria-controls="home">
+                            <img src="{{ asset('/storage/img/home.svg') }}" width="20">
+                            <span>Home</span>
+                        </a>
+
+                        <ul id="home" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link">
+                                    <img src="{{ asset('/storage/img/home.svg') }}" width="20">
+                                    <span>Home 2</span>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </li>
+
+
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">
+                            <img src="{{ asset('/storage/img/home.svg') }}" width="20">
+                            <span>Home</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">
+                            <img src="{{ asset('/storage/img/home.svg') }}" width="20">
+                            <span>Home</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">
+                            <img src="{{ asset('/storage/img/home.svg') }}" width="20">
+                            <span>Home</span>
+                        </a>
+                    </li>
+
+                </ul>
+
+                <div class="sidebar-footer">
+                    <a class="sidebar-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <img src="{{ asset('/storage/img/exit.svg') }}" width="20">
+                        <span>Logout</span>
+                    </a>
+                </div>
+
+            </aside>
+
+            <div class="main p-3">
+                @yield('content')
+            </div>
+
+        </div>
+
+
+
+        <!--<main class="py-4">
             @yield('content')
-        </main>
-    </div>
+        </main>-->
+
+        <div class="main-footer default-background-color shadow-md">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div>© 2021 <a href="https://laravel.com">Laravel</a>. All rights reserved.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- app -->
+
 </body>
 </html>

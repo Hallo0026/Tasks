@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\tasks;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class TasksController extends Controller
 {
@@ -13,8 +14,34 @@ class TasksController extends Controller
      */
     public function index()
     {
+        /*$tasks = Tasks::all();
+        return response()->json($tasks, 200);*/
+
         $tasks = Tasks::all();
-        return response()->json($tasks, 200);
+
+        $today = Carbon::today();
+
+        // Separar as tarefas em diferentes categorias
+        $tasksDueTodayOrNoDate = $tasks->filter(function ($task) use ($today) {
+            return is_null($task->conclusion_date) || $task->conclusion_date->isSameDay($today);
+        });
+
+        $upcomingTasks = $tasks->filter(function ($task) use ($today) {
+            return !is_null($task->conclusion_date) && $task->conclusion_date->isAfter($today);
+        });
+
+        $completedTasks = $tasks->filter(function ($task) {
+            return $task->completed == '1';
+        });
+
+
+        $response = [
+            'today_tasks' => $tasksDueTodayOrNoDate->values(),
+            'upcoming_tasks' => $upcomingTasks->values(),
+            'completed_tasks' => $completedTasks->values(),
+        ];
+
+        return response()->json($response, 200);
     }
 
     /**
