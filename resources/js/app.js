@@ -16,13 +16,18 @@ import { createApp } from 'vue';
 const app = createApp({});
 
 import LoginComponent from './components/Login.vue';
+import TaskListComponent from './components/TaskList.vue';
 import CardComponent from './components/partials/Card.vue';
 import TaskComponent from './components/partials/Task.vue';
-import TaskListComponent from './components/partials/TaskList.vue';
+import ModalComponent from './components/partials/Modal.vue';
+import CreateTaskFormComponent from './components/partials/CreateTask.vue';
+
 app.component('login-component', LoginComponent);
+app.component('task-list-component', TaskListComponent);
 app.component('card-component', CardComponent);
 app.component('task-component', TaskComponent);
-app.component('task-list-component', TaskListComponent);
+app.component('modal-component', ModalComponent);
+app.component('create-task-form-component', CreateTaskFormComponent);
 
 /**
  * The following block of code may be used to automatically register your

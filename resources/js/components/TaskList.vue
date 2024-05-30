@@ -6,14 +6,13 @@
             </template>
             <template v-slot>
                 <div v-for="task in todayTasks" :key="task.id">
-                    <task-component :task="task"></task-component>
+                    <task-component status="uncompleted" :task="task" @task-updated="updateTasks"></task-component>
                 </div>
             </template>
             <template v-slot:footer>
                 <!-- Conteúdo do rodapé pode ser adicionado aqui -->
             </template>
         </card-component>
-
 
         <card-component v-if="upcomingTasks.length">
             <template v-slot:header>
@@ -21,29 +20,27 @@
             </template>
             <template v-slot>
                 <div v-for="task in upcomingTasks" :key="task.id">
-                    <task-component :task="task"></task-component>
+                    <task-component status="uncompleted" :task="task" @task-updated="updateTasks"></task-component>
                 </div>
             </template>
             <template v-slot:footer>
                 <!-- Conteúdo do rodapé pode ser adicionado aqui -->
             </template>
         </card-component>
-
 
         <card-component v-if="completedTasks.length">
             <template v-slot:header>
                 Concluídas
             </template>
             <template v-slot>
-                <div v-for="task in tasks" :key="task.id">
-                    <task-component :task="task"></task-component>
+                <div v-for="task in completedTasks" :key="task.id">
+                    <task-component status="completed" :task="task" @task-updated="updateTasks"></task-component>
                 </div>
             </template>
             <template v-slot:footer>
                 <!-- Conteúdo do rodapé pode ser adicionado aqui -->
             </template>
         </card-component>
-
     </div>
 </template>
 
@@ -64,6 +61,7 @@ export default {
         this.getTasks();
     },
     methods: {
+
         getTasks() {
             axios.get('/api/v1/tasks')
                 .then(response => {
@@ -71,10 +69,15 @@ export default {
                     this.todayTasks = response.data.today_tasks;
                     this.upcomingTasks = response.data.upcoming_tasks;
                     this.completedTasks = response.data.completed_tasks;
+                    console.log(this.tasks);
                 })
                 .catch(error => {
                     console.error('Error fetching tasks:', error);
                 });
+        },
+
+        updateTasks() {
+            this.getTasks();
         }
 
     }

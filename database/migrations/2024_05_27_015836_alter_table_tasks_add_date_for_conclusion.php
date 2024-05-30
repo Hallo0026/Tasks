@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('tasks', function (Blueprint $table) {
-            $table->datetime('conclusion_date')->nullable()->after('description');
+            $table->date('conclusion_date')->nullable()->after('completed');
+            $table->time('conclusion_time')->nullable()->after('conclusion_date');
         });
     }
 
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('tasks', function (Blueprint $table) {
             $table->dropColumn('conclusion_date');
+            $table->dropColumn('conclusion_time');
         });
     }
 };

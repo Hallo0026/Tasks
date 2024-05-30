@@ -26,8 +26,8 @@ li {
 }
 
 #sidebar {
-    width: 70px;
-    min-width: 70px;
+    width: 60px;
+    min-width: 60px;
     z-index: 1000;
     transition: all .25s ease-in-out;
     display: flex;
@@ -45,7 +45,7 @@ li {
     background-color: transparent;
     cursor: pointer;
     border: 0;
-    padding: 1rem 1.5rem;
+    padding: 1rem .925rem;
 }
 
 #toggle-btn img {
@@ -74,12 +74,22 @@ li {
 }
 
 a.sidebar-link {
-    padding: .625rem 1.625rem;
-    color: #FFF;
+    padding: .625rem 1.2rem;
+    color: #414141;
     display: block;
     font-size: .9rem;
+    font-weight: 600;
     white-space: nowrap;
     border-left: 3px solid transparent;
+}
+
+a.sidebar-link span {
+    margin-left: .75rem;
+}
+
+a.sidebar-link img {
+    width: 20px;
+    height: 20px;
 }
 
 .sidebar-link i {

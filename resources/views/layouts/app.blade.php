@@ -75,86 +75,115 @@
             </div>
         </nav>-->
 
-        <div class="wrapper">
-            <aside id="sidebar">
-                <div class="d-flex">
-                    <button id="toggle-btn" type="button">
-                        <img src="{{ asset('/storage/img/grid-alt.svg') }}">
-                    </button>
+        @auth
 
-                    <div class="sidebar-logo">
-                        <a href="#">
-                            {{ config('app.name', 'Laravel') }}
+            <div class="wrapper">
+
+                <aside id="sidebar" class="expand">
+                    <div class="d-flex">
+                        <button id="toggle-btn" type="button">
+                            <img src="{{ asset('/storage/img/grid-alt.svg') }}">
+                        </button>
+
+                        <div class="sidebar-logo">
+                            <a href="#">
+                                {{ config('app.name', 'Laravel') }}
+                            </a>
+                        </div>
+                    </div>
+
+                    <ul class="sidebar-nav">
+
+
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+                                <img src="{{ asset('/storage/img/circle-plus.svg') }}" style="width: 22px;height: 22px;">
+                                <span style="color: orangered;">Nova tarefa</span>
+                            </a>
+                        </li>
+
+
+                        <li class="sidebar-item">
+
+                            <a href="#" class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" data-bs-target="#home" aria-expanded="false" aria-controls="home">
+                                <img src="{{ asset('/storage/img/home.svg') }}">
+                                <span>Home</span>
+                            </a>
+
+                            <ul id="home" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                                <li class="sidebar-item">
+                                    <a href="#" class="sidebar-link">
+                                        <img src="{{ asset('/storage/img/home.svg') }}">
+                                        <span>Home 2</span>
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </li>
+
+
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link">
+                                <img src="{{ asset('/storage/img/home.svg') }}">
+                                <span>Grupos</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link">
+                                <img src="{{ asset('/storage/img/home.svg') }}">
+                                <span>Tags</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link">
+                                <img src="{{ asset('/storage/img/home.svg') }}">
+                                <span>Hoje</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link">
+                                <img src="{{ asset('/storage/img/home.svg') }}">
+                                <span>Próximos dias</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link">
+                                <img src="{{ asset('/storage/img/home.svg') }}">
+                                <span>Concluídas</span>
+                            </a>
+                        </li>
+
+                    </ul>
+
+                    <div class="sidebar-footer">
+                        <a class="sidebar-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <img src="{{ asset('/storage/img/exit.svg') }}">
+                            <span>Logout</span>
                         </a>
                     </div>
+
+                </aside>
+
+                <div class="main p-3">
+                    @yield('content')
                 </div>
 
-                <ul class="sidebar-nav">
-
-                    <li class="sidebar-item">
-
-                        <a href="#" class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" data-bs-target="#home" aria-expanded="false" aria-controls="home">
-                            <img src="{{ asset('/storage/img/home.svg') }}" width="20">
-                            <span>Home</span>
-                        </a>
-
-                        <ul id="home" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                            <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">
-                                    <img src="{{ asset('/storage/img/home.svg') }}" width="20">
-                                    <span>Home 2</span>
-                                </a>
-                            </li>
-                        </ul>
-
-                    </li>
-
-
-                    <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">
-                            <img src="{{ asset('/storage/img/home.svg') }}" width="20">
-                            <span>Home</span>
-                        </a>
-                    </li>
-
-                    <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">
-                            <img src="{{ asset('/storage/img/home.svg') }}" width="20">
-                            <span>Home</span>
-                        </a>
-                    </li>
-
-                    <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">
-                            <img src="{{ asset('/storage/img/home.svg') }}" width="20">
-                            <span>Home</span>
-                        </a>
-                    </li>
-
-                </ul>
-
-                <div class="sidebar-footer">
-                    <a class="sidebar-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <img src="{{ asset('/storage/img/exit.svg') }}" width="20">
-                        <span>Logout</span>
-                    </a>
-                </div>
-
-            </aside>
-
-            <div class="main p-3">
-                @yield('content')
             </div>
 
-        </div>
+        @endauth
 
 
+        @guest
+            <main class="py-4">
+                @yield('content')
+            </main>
+        @endguest
 
-        <!--<main class="py-4">
-            @yield('content')
-        </main>-->
-
-        <div class="main-footer default-background-color shadow-md">
+        <!--<div class="main-footer default-background-color shadow-md">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
@@ -162,7 +191,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
 
     </div> <!-- app -->
 

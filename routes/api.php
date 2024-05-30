@@ -30,6 +30,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('v1')->group(function () {
         Route::apiResource('tasks', TasksController::class);
+        Route::post('/tasks/{task}/complete', [TasksController::class, 'completeTask']);
+        Route::post('/tasks/{task}/uncomplete', [TasksController::class, 'uncompleteTask']);
     });
 
 });
