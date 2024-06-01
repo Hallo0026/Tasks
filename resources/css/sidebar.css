@@ -32,8 +32,8 @@ li {
     transition: all .25s ease-in-out;
     display: flex;
     flex-direction: column;
-    background-color: #0e223e;
-    background-color: #dbdbdb;
+    /*background-color: #dbdbdb;*/
+    background-color: #f2f2f2;
 }
 
 #sidebar.expand {
@@ -64,7 +64,7 @@ li {
 }
 
 #sidebar:not(.expand) .sidebar-logo,
-#sidebar:not(.expand) a.sidebar-link span {
+#sidebar:not(.expand) a.sidebar-link .titulo-item-sidebar {
     display: none;
 }
 
@@ -74,7 +74,7 @@ li {
 }
 
 a.sidebar-link {
-    padding: .625rem 1.2rem;
+    padding: .625rem .9rem;
     color: #414141;
     display: block;
     font-size: .9rem;
@@ -84,7 +84,7 @@ a.sidebar-link {
 }
 
 a.sidebar-link span {
-    margin-left: .75rem;
+    margin-right: .75rem;
 }
 
 a.sidebar-link img {

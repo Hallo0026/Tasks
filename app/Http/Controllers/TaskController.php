@@ -2,55 +2,56 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\tasks;
+use App\Models\Task;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
-class TasksController extends Controller
+class TaskController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $tasks = Tasks::all();
-        $today = Carbon::now();
+        $tasks = Task::all();
+        $today = Carbon::now()->setTimezone('America/Sao_Paulo');
 
-        // Separar as tarefas em diferentes categorias
         $tasksDueTodayOrNoDate = $tasks->filter(function ($task) use ($today) {
             return (is_null($task->conclusion_date) && !$task->completed) ||
-                ($task->conclusion_date && Carbon::parse($task->conclusion_date)->isSameDay($today) && !$task->completed);
-        })->map(function ($task) {
-            $task->conclusion_date = $task->conclusion_date ? Carbon::parse($task->conclusion_date)->format('d/m') : null;
-            $task->conclusion_time = $task->conclusion_time ? Carbon::parse($task->conclusion_time)->format('H:i') : null;
-            return $task;
+                ($task->conclusion_date
+                && Carbon::parse($task->conclusion_date)->isSameDay($today)
+                && !Carbon::parse($task->conclusion_date)->isPast())
+                && !$task->completed;
         });
 
         $upcomingTasks = $tasks->filter(function ($task) use ($today) {
-            return $task->conclusion_date && Carbon::parse($task->conclusion_date)->isAfter($today);
-        })->map(function ($task) {
-            $task->conclusion_date = $task->conclusion_date ? Carbon::parse($task->conclusion_date)->format('d/m') : null;
-            $task->conclusion_time = $task->conclusion_time ? Carbon::parse($task->conclusion_time)->format('H:i') : null;
-            return $task;
+            return $task->conclusion_date
+            && Carbon::parse($task->conclusion_date)->isAfter($today)
+            && !Carbon::parse($task->conclusion_date)->isSameDay($today)
+            && !$task->completed;
+        });
+
+        $overdueTasks = $tasks->filter(function ($task) use ($today) {
+            return $task->conclusion_date && Carbon::parse($task->conclusion_date)->isPast() && !$task->completed;
         });
 
         $completedTasks = $tasks->filter(function ($task) {
             return $task->completed == '1';
-        })->map(function ($task) {
-            $task->conclusion_date = $task->conclusion_date ? Carbon::parse($task->conclusion_date)->format('d/m') : null;
-            $task->conclusion_time = $task->conclusion_time ? Carbon::parse($task->conclusion_time)->format('H:i') : null;
-            return $task;
         });
+
+        if($tasksDueTodayOrNoDate->isEmpty() && $upcomingTasks->isEmpty() && $overdueTasks->isEmpty() && $completedTasks->isEmpty()) {
+            return response()->json(['message' => 'No tasks found'], 404);
+        }
 
         $response = [
             'today_tasks' => $tasksDueTodayOrNoDate->values(),
             'upcoming_tasks' => $upcomingTasks->values(),
+            'overdue_tasks' => $overdueTasks->values(),
             'completed_tasks' => $completedTasks->values(),
         ];
 
         return response()->json($response, 200);
     }
-
 
 
     /**
@@ -59,50 +60,63 @@ class TasksController extends Controller
     public function store(Request $request)
     {
         //$task = Tasks::create($request->all());
-        $task = new Tasks();
+        $task = new Task();
         $task->title = $request->task;
         $task->description = $request->description;
         $task->conclusion_date = $request->due_date;
-        $task->conclusion_time = $request->due_time;
         $task->user_id = auth()->user()->id;
         $task->save();
 
         return response()->json($task, 201);
     }
 
+
     /**
      * Display the specified resource.
      */
     public function show($id)
     {
-        $task = Tasks::find($id);
+        $task = Task::find($id);
         return response()->json($task, 200);
     }
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
     {
-        $task = Tasks::find($id);
+        $task = Task::find($id);
         $task->update($request->all());
         return response()->json($task, 200);
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy($id)
     {
-        $task = Tasks::find($id);
-        $task->softDelete();
-        return response()->json(null, 204);
+        $task = Task::find($id);
+
+        if ($task->user_id !== auth()->user()->id) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $task->delete();
+
+        $response = [
+            'message' => 'Task deleted',
+            'id' => $id
+        ];
+
+        return response()->json($response, 200);
     }
 
 
     public function completeTask($id)
     {
-        $task = Tasks::find($id);
+        $task = Task::find($id);
 
         if ($task->user_id !== auth()->user()->id) {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -118,7 +132,7 @@ class TasksController extends Controller
 
     public function uncompleteTask($id)
     {
-        $task = Tasks::find($id);
+        $task = Task::find($id);
 
         if ($task->user_id !== auth()->user()->id) {
             return response()->json(['error' => 'Unauthorized'], 401);

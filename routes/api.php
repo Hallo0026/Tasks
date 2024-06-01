@@ -3,7 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\TasksController;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,9 +30,12 @@ Route::prefix('auth/v1')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('v1')->group(function () {
-        Route::apiResource('tasks', TasksController::class);
-        Route::post('/tasks/{task}/complete', [TasksController::class, 'completeTask']);
-        Route::post('/tasks/{task}/uncomplete', [TasksController::class, 'uncompleteTask']);
+        Route::apiResource('tasks', TaskController::class);
+        Route::post('/tasks/{task}/complete', [TaskController::class, 'completeTask']);
+        Route::post('/tasks/{task}/uncomplete', [TaskController::class, 'uncompleteTask']);
+
+        Route::get('/user/preferences', [UserController::class, 'getPreferences']);
+        Route::post('/user/preferences', [UserController::class, 'updatePreferences']);
     });
 
 });

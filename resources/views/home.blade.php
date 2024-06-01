@@ -21,21 +21,11 @@
                     }
                 ?>
 
-                <h3 style="padding-left: .8rem;"><?=$greeting?>, {{ Auth::user()->name }}</h3>
+                <h3 style="padding-left: 6px;"><?=$greeting?>, {{ Auth::user()->name }}</h3>
             </div>
         </div>
 
         <task-list-component title="Tarefas"></task-list-component>
-
-        <modal-component>
-            <template v-slot:title>
-                Adicionar tarefa
-            </template>
-            <template v-slot:body>
-                <create-task-form-component @submit="handleFormSubmit"></create-task-form-component>
-            </template>
-            
-        </modal-component>
 
     </div>
 

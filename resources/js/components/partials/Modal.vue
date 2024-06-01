@@ -27,3 +27,9 @@ export default {
     name: 'ModalComponent',
 };
 </script>
+
+<style scoped>
+    .modal-title {
+        font-weight: 600;
+    }
+</style>

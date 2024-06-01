@@ -20,7 +20,6 @@ return new class extends Migration
             $table->foreignId('task_group_id')->nullable()->constrained()->onDelete('cascade');
             $table->dateTime('completed_at')->nullable();
             $table->timestamps();
-            $table->dateTime('deleted_at')->nullable();
         });
     }
 

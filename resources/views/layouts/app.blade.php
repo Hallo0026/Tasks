@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <html data-bs-theme="light">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -17,7 +18,7 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/js/sidebar.js'])
 
     <!-- Styles -->
-    @vite(['resources/css/app.css', 'resources/css/sidebar.css'])
+    @vite(['resources/css/app.css', 'resources/css/sidebar.css', 'resources/css/animations.css'])
 
 </head>
 <body>
@@ -79,7 +80,7 @@
 
             <div class="wrapper">
 
-                <aside id="sidebar" class="expand">
+                <!--<aside id="sidebar" class="expand">
                     <div class="d-flex">
                         <button id="toggle-btn" type="button">
                             <img src="{{ asset('/storage/img/grid-alt.svg') }}">
@@ -166,7 +167,9 @@
                         </a>
                     </div>
 
-                </aside>
+                </aside>-->
+
+                <sidebar-component app-name="{{ config('app.name', 'Laravel') }}" user-id="{{ Auth::user()->id }}"></sidebar-component>
 
                 <div class="main p-3">
                     @yield('content')

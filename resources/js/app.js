@@ -7,6 +7,7 @@
 import './bootstrap';
 import { createApp } from 'vue';
 
+
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
  * registering components with the application instance so they are ready
@@ -16,18 +17,21 @@ import { createApp } from 'vue';
 const app = createApp({});
 
 import LoginComponent from './components/Login.vue';
+import Sidebar from './components/partials/Sidebar.vue';
 import TaskListComponent from './components/TaskList.vue';
 import CardComponent from './components/partials/Card.vue';
 import TaskComponent from './components/partials/Task.vue';
 import ModalComponent from './components/partials/Modal.vue';
-import CreateTaskFormComponent from './components/partials/CreateTask.vue';
+import CreateTaskModal from './components/partials/CreateTaskModal.vue';
 
 app.component('login-component', LoginComponent);
+app.component('sidebar-component', Sidebar);
 app.component('task-list-component', TaskListComponent);
 app.component('card-component', CardComponent);
 app.component('task-component', TaskComponent);
 app.component('modal-component', ModalComponent);
-app.component('create-task-form-component', CreateTaskFormComponent);
+app.component('create-task-form-component', CreateTaskModal);
+
 
 /**
  * The following block of code may be used to automatically register your
