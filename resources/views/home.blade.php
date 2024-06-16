@@ -4,10 +4,13 @@
 
     <div class="container">
 
-        <div class="row">
+        <div class="row text-white">
             <div class="col-12">
 
                 <?php
+
+                    setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+                    $dt = \Carbon\Carbon::now();
 
                     $currentTime = date('H:i:s');
                     $greeting = '';
@@ -19,9 +22,12 @@
                     } else {
                         $greeting = 'Boa noite';
                     }
+
                 ?>
 
                 <h3 style="padding-left: 6px;"><?=$greeting?>, {{ Auth::user()->name }}</h3>
+                <h6 style="padding-left: 6px; text-transform: capitalize;"><?=$dt->formatLocalized('%A,  %d %B %Y');?></h6>
+
             </div>
         </div>
 

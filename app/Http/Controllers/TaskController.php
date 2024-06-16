@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class TaskController extends Controller
 {
@@ -13,33 +14,55 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::all();
+        $tasks = Task::with('task_groups')->where('user_id', auth()->user()->id)->get();
         $today = Carbon::now()->setTimezone('America/Sao_Paulo');
 
+        $tasks->each(function($task) {
+            Log::info('Task ID: ' . $task->id . ' Group: ' . json_encode($task->group));
+        });
+
         $tasksDueTodayOrNoDate = $tasks->filter(function ($task) use ($today) {
+            $taskDateTime = $task->conclusion_date ? Carbon::parse($task->conclusion_date) : null;
+            if ($task->conclusion_time) {
+                $taskDateTime->setTimeFromTimeString($task->conclusion_time);
+            }
+
             return (is_null($task->conclusion_date) && !$task->completed) ||
-                ($task->conclusion_date
-                && Carbon::parse($task->conclusion_date)->isSameDay($today)
-                && !Carbon::parse($task->conclusion_date)->isPast())
-                && !$task->completed;
+                ($taskDateTime && $taskDateTime->isSameDay($today) && !$taskDateTime->isPast()) &&
+                !$task->completed;
         });
 
         $upcomingTasks = $tasks->filter(function ($task) use ($today) {
-            return $task->conclusion_date
-            && Carbon::parse($task->conclusion_date)->isAfter($today)
-            && !Carbon::parse($task->conclusion_date)->isSameDay($today)
-            && !$task->completed;
+            if (!$task->conclusion_date) {
+                return false;
+            }
+
+            $taskDateTime = Carbon::parse($task->conclusion_date);
+            if ($task->conclusion_time) {
+                $taskDateTime->setTimeFromTimeString($task->conclusion_time);
+            }
+
+            return $taskDateTime->isAfter($today) && !$taskDateTime->isSameDay($today) && !$task->completed;
         });
 
         $overdueTasks = $tasks->filter(function ($task) use ($today) {
-            return $task->conclusion_date && Carbon::parse($task->conclusion_date)->isPast() && !$task->completed;
+            if (!$task->conclusion_date) {
+                return false;
+            }
+
+            $taskDateTime = Carbon::parse($task->conclusion_date);
+            if ($task->conclusion_time) {
+                $taskDateTime->setTimeFromTimeString($task->conclusion_time);
+            }
+
+            return $taskDateTime->isPast() && !$task->completed;
         });
 
         $completedTasks = $tasks->filter(function ($task) {
             return $task->completed == '1';
         });
 
-        if($tasksDueTodayOrNoDate->isEmpty() && $upcomingTasks->isEmpty() && $overdueTasks->isEmpty() && $completedTasks->isEmpty()) {
+        if ($tasksDueTodayOrNoDate->isEmpty() && $upcomingTasks->isEmpty() && $overdueTasks->isEmpty() && $completedTasks->isEmpty()) {
             return response()->json(['message' => 'No tasks found'], 404);
         }
 
@@ -64,6 +87,7 @@ class TaskController extends Controller
         $task->title = $request->task;
         $task->description = $request->description;
         $task->conclusion_date = $request->due_date;
+        $task->conclusion_time = $request->due_time;
         $task->user_id = auth()->user()->id;
         $task->save();
 

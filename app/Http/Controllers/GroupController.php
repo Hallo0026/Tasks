@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Groups;
+use App\Models\Group;
 use Illuminate\Http\Request;
 
-class GroupsController extends Controller
+class GroupController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $groups = Group::all()->where('user_id', auth()->user()->id);
+        return response()->json($groups);
+
     }
 
     /**
@@ -34,7 +36,7 @@ class GroupsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Groups $groups)
+    public function show(Group $groups)
     {
         //
     }
@@ -42,7 +44,7 @@ class GroupsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Groups $groups)
+    public function edit(Group $groups)
     {
         //
     }
@@ -50,7 +52,7 @@ class GroupsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Groups $groups)
+    public function update(Request $request, Group $groups)
     {
         //
     }
@@ -58,7 +60,7 @@ class GroupsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Groups $groups)
+    public function destroy(Group $groups)
     {
         //
     }

@@ -8,7 +8,7 @@
             </button>
 
             <div class="sidebar-logo">
-                <a href="#" class="text-black">
+                <a href="#" class="text-white">
                     Vinicius
                 </a>
             </div>
@@ -84,7 +84,7 @@
 
         <div class="sidebar-footer">
             <a class="sidebar-link" href="logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                <img src="/storage/icons/exit.svg">
+                <Logout />
                 <span class="titulo-item-sidebar">Logout</span>
             </a>
         </div>
@@ -103,6 +103,7 @@
     import CalendarTodayOutlineIcon from 'vue-material-design-icons/CalendarTodayOutline.vue';
     import CalendarBlankIcon from 'vue-material-design-icons/CalendarBlank.vue';
     import CheckCircleOutlineIcon from 'vue-material-design-icons/CheckCircleOutline.vue';
+    import Logout from 'vue-material-design-icons/Logout.vue';
 
     export default {
         name: 'SidebarComponent',
@@ -115,7 +116,8 @@
             ViewGridOutlineIcon,
             CalendarTodayOutlineIcon,
             CalendarBlankIcon,
-            CheckCircleOutlineIcon
+            CheckCircleOutlineIcon,
+            Logout,
         }
     }
 </script>

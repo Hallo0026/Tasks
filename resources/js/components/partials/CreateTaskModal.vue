@@ -45,11 +45,10 @@
             createTask() {
                 const url = '/api/v1/tasks';
 
-                this.dueDate = this.dueDate + ' ' + this.dueTime;
-
                 const data = {
                     task: this.task,
                     due_date: this.dueDate,
+                    due_time: this.dueTime,
                     description: this.description
                 };
 

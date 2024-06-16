@@ -113,8 +113,8 @@
 
 
     <div class="row" v-if="!tasksfound">
-        <div class="col" style="margin-left: 6px; padding-top: 4px;">
-            <h5>Quais são seus objetivos de hoje?</h5>
+        <div class="col" style="margin: 20px 10px 10px 10px; padding-top: 4px;">
+            <h5>Quais são seus próximos objetivos?</h5>
 
             <span class="task-acorddion-add-task-button p-0 ms-0" data-bs-toggle="modal" data-bs-target="#addTaskModal">
                 <PlusIcon fillColor="green" style="vertical-align: bottom;"/>
@@ -135,6 +135,11 @@
         </template>
 
     </modal-component>
+
+    <task-sidebar-component
+    @task-updated="updateTasks"
+    @task-deleted="updateTasks">
+    </task-sidebar-component>
 
 </template>
 
@@ -162,9 +167,12 @@
             this.getTasks();
         },
         methods: {
+
             getTasks() {
+
                 axios.get('/api/v1/tasks')
                     .then(response => {
+
                         this.tasksfound = true;
                         this.tasks = response.data;
                         this.todayTasks = response.data.today_tasks;
@@ -184,15 +192,19 @@
 
                     });
             },
-            
+
             updateTasks() {
+
                 this.tasks = [];
                 this.todayTasks = [];
                 this.upcomingTasks = [];
                 this.completedTasks = [];
                 this.overdueTasks = [];
                 this.getTasks();
-            }
+
+            },
+
+
         }
     };
 </script>

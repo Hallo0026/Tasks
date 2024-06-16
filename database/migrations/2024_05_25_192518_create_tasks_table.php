@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->boolean('completed')->default(false);
+            $table->date('conclusion_date');
+            $table->time('conclusion_time')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('task_group_id')->nullable()->constrained()->onDelete('cascade');
             $table->dateTime('completed_at')->nullable();

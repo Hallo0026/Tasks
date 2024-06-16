@@ -10,7 +10,7 @@
                 :checked="isCompleted"
                 @click="toggleTaskCompletion">
         </div>
-        <div class="col">
+        <div class="col" @click="showTaskDetails()">
 
             <div class="row-task-title">
 
@@ -22,18 +22,8 @@
                 <div class="dropdown float-end">
 
                     <span class="task-menu dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        ...
+                        <StarOutline :size="22" />
                     </span>
-
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Alterar</a></li>
-                        <li><hr class="dropdown-divider"></hr></li>
-                        <li><a class="dropdown-item" href="#">Adicionar tag</a></li>
-                        <li><hr class="dropdown-divider"></hr></li>
-                        <li><a class="dropdown-item" href="#">Grupo</a></li>
-                        <li><hr class="dropdown-divider"></hr></li>
-                        <li><a class="dropdown-item" @click="deleteTask(task.id)">Excluir</a></li>
-                    </ul>
 
                 </div>
 
@@ -42,7 +32,7 @@
             <div class="task-description">{{ task.description }}</div>
 
             <div :class="['task-due-time', dueTimeClass]" v-if="!isCompleted">
-                {{ task.conclusion_date }}
+                {{ task.conclusion_date }} {{ task.conclusion_time }}
             </div>
 
         </div>
@@ -56,6 +46,8 @@
     import axios from 'axios';
     import moment from 'moment';
     import Swal from 'sweetalert2';
+    import StarOutline from 'vue-material-design-icons/StarOutline.vue';
+    import { mapState, mapActions } from 'vuex';
 
     export default {
         name: 'TaskComponent',
@@ -69,18 +61,30 @@
                 required: true
             }
         },
-
+        components: {
+            StarOutline
+        },
+        data() {
+            return {
+                isTaskSidebarExpanded: false
+            };
+        },
         computed: {
+
+            ...mapState(['taskDetails']),
 
             isCompleted() {
                 return this.status === 'completed';
             },
+
             dueTimeClass() {
+
                 const today = moment();
                 let conclusionDateTime;
 
-                if (this.task.conclusion_date) {
-                    conclusionDateTime = moment(this.task.conclusion_date, 'YYYY-MM-DD HH:mm:ss');
+                if (this.task.conclusion_date && this.task.conclusion_time) {
+                    //conclusionDateTime = moment(this.task.conclusion_date, 'YYYY-MM-DD HH:mm:ss');
+                    conclusionDateTime = moment(this.task.conclusion_date + ' ' + this.task.conclusion_time);
                 }
 
                 if (!conclusionDateTime) {
@@ -132,6 +136,7 @@
             },
 
             uncompleteTask(taskId) {
+
                 const url = `/api/v1/tasks/${taskId}/uncomplete`;
 
                 axios.post(url)
@@ -182,11 +187,35 @@
                 });
 
             },
+
             closeModal() {
                 this.$refs.closeModalBtn.click();
-            }
+            },
+
+            ...mapActions(['setTaskDetails']),
+
+                showTaskDetails() {
+
+                    const taskSidebar = document.getElementById('task-sidebar');
+                    const closeTaskSidebarIcon = document.getElementById('close-task-sidebar-icon');
+
+                    this.setTaskDetails(this.task);
+
+                    this.isSidebarExpanded = !this.isSidebarExpanded;
+
+                    taskSidebar.classList.toggle('expand');
+                    closeTaskSidebarIcon.classList.toggle('hide');
+
+                },
 
         },
+
+        watch: {
+            task(newTask) {
+                this.setTaskDetails(newTask);
+            },
+        },
+
     };
 
 </script>
@@ -197,17 +226,18 @@
         min-height: 72px;
         /*border-bottom: 1px solid #e7e7e7;*/
         margin: 0;
+        cursor: pointer;
     }
 
     .task:hover {
-        background-color: #f7f7f7;
+        background-color: #313131;
         border-radius: 8px;
     }
 
     .task-title {
         font-size: 1.1rem;
         font-weight: 500;
-        color: #414141
+        color: #e3e3e3;
     }
 
     .task-description {
@@ -227,6 +257,12 @@
         height: 22px;
         margin-top: 6px;
         border-radius: 36px;
+        background-color: #e3e3e3;
+        border: 1px solid #2b2b2b;
+    }
+
+    .task-checkbox:checked {
+        background-color: darkgreen;
     }
 
     .task-menu {

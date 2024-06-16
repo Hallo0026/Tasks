@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <html data-bs-theme="light">
+    <html data-bs-theme="dark">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -18,7 +18,7 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/js/sidebar.js'])
 
     <!-- Styles -->
-    @vite(['resources/css/app.css', 'resources/css/sidebar.css', 'resources/css/animations.css'])
+    @vite(['resources/css/app.css', 'resources/css/sidebar.css', 'resources/css/animations.css', 'resources/css/task_sidebar.css'])
 
 </head>
 <body>
