@@ -44,7 +44,16 @@ app.component('create-task-form-component', CreateTaskModal);
 app.component('create-group-form-component', CreateGroupModal);
 
 
+// Função global para formatar datas no formato BR
+app.config.globalProperties.$formatDate = function(value) {
+    if (value) {
+        const datePart = value.split('-');
+        if (datePart.length === 3) {
+            return `${datePart[2]}/${datePart[1]}/${datePart[0]}`;
+        }
+    }
+    return value;
+};
+
 app.use(store);
-
-
 app.mount('#app');

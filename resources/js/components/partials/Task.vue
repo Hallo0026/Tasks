@@ -18,23 +18,24 @@
                     {{ task.title }}
                 </span>
 
-
-                <div class="dropdown float-end">
-
-                    <span class="task-menu dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <StarOutline :size="22" />
-                    </span>
-
-                </div>
-
             </div>
 
             <div class="task-description">{{ task.description }}</div>
 
             <div :class="['task-due-time', dueTimeClass]" v-if="!isCompleted">
-                {{ task.conclusion_date }} {{ task.conclusion_time }}
+                {{ $formatDate(task.conclusion_date) }} {{ task.conclusion_time }}
             </div>
 
+        </div>
+
+        <div class="col-auto">
+            <div class="dropdown float-end">
+
+            <span class="favorite-icon dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <StarOutline :size="22" />
+            </span>
+
+            </div>
         </div>
 
     </div>
@@ -85,7 +86,6 @@
                 let conclusionDateTime;
 
                 if (this.task.conclusion_date && this.task.conclusion_time) {
-                    //conclusionDateTime = moment(this.task.conclusion_date, 'YYYY-MM-DD HH:mm:ss');
                     conclusionDateTime = moment(this.task.conclusion_date + ' ' + this.task.conclusion_time);
                 }
 
@@ -125,6 +125,7 @@
             },
 
             completeTask(taskId) {
+
                 const url = `/api/v1/tasks/${taskId}/complete`;
 
                 axios.post(url)
@@ -227,9 +228,9 @@
 
     .task {
         min-height: 72px;
-        /*border-bottom: 1px solid #e7e7e7;*/
         margin: 0;
         cursor: pointer;
+        padding: 6px;
     }
 
     .task:hover {
@@ -256,9 +257,8 @@
 
     .task-checkbox {
         cursor: pointer;
-        width: 22px;
-        height: 22px;
-        margin-top: 6px;
+        width: 26px;
+        height: 26px;
         border-radius: 36px;
         background-color: #e3e3e3;
         border: 1px solid #2b2b2b;
@@ -292,6 +292,10 @@
 
     .overdue-task {
         margin-bottom: 4px;
+    }
+
+    .favorite-icon {
+        cursor: pointer;
     }
 
 </style>

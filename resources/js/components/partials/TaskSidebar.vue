@@ -36,8 +36,8 @@
                     <input type="text" class="input-text-task-sidebar task-description" v-model="taskDescription" placeholder="Adicione um comentário">
                 </div>
 
-                <div v-if="taskDueTime">
-                    <input type="text" class="input-text-task-sidebar task-description" v-model="taskDueTime">
+                <div v-if="taskConclusionDate">
+                    <input type="text" class="input-text-task-sidebar task-description" v-model="$taskConclusionDate">
                 </div>
 
                 <span class="titulo-item-sidebar"></span>
@@ -76,7 +76,7 @@ export default {
         taskDescription() {
             return this.taskDetails ? this.taskDetails.description : '';
         },
-        taskDueTime() {
+        taskConclusionDate() {
             return this.taskDetails ? this.taskDetails.conclusion_date : '';
         },
         taskStatus() {
@@ -87,6 +87,7 @@ export default {
         }
     },
     methods: {
+
         toggleSidebar() {
             const taskSidebar = document.getElementById('task-sidebar');
             const taskSidebarCloseIcon = document.getElementById('close-task-sidebar-icon');
@@ -97,83 +98,84 @@ export default {
 
         toggleTaskCompletion() {
 
-                console.log(this.isCompleted);
+            console.log(this.isCompleted);
 
-                if (this.isCompleted) {
-                    this.uncompleteTask(this.taskDetails.id);
-                } else {
-                    this.completeTask(this.taskDetails.id);
-                }
-            },
+            if (this.isCompleted) {
+                this.uncompleteTask(this.taskDetails.id);
+            } else {
+                this.completeTask(this.taskDetails.id);
+            }
+        },
 
-            completeTask(taskId) {
-                const url = `/api/v1/tasks/${taskId}/complete`;
+        completeTask(taskId) {
+            const url = `/api/v1/tasks/${taskId}/complete`;
 
-                axios.post(url)
-                    .then(response => {
-                        console.log(response.data);
-                        this.$emit('task-updated', taskId);
-                        this.toggleSidebar();
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-
-            uncompleteTask(taskId) {
-
-                const url = `/api/v1/tasks/${taskId}/uncomplete`;
-
-                axios.post(url)
-                    .then(response => {
-                        console.log(response.data);
-                        this.isCompleted = false;
-                        this.$emit('task-updated', taskId);
-                        this.toggleSidebar();
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-
-            deleteTask(taskId) {
-
-                Swal.fire({
-                        //title: "Tem certeza que deseja deletar esta tarefa?",
-                        text: "Tem certeza que deseja deletar esta tarefa?",
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#3085d6",
-                        cancelButtonColor: "#d33",
-                        confirmButtonText: "Sim, deletar!",
-                        cancelButtonText: "Voltar",
-
-                    }).then((result) => {
-
-                    if (result.isConfirmed) {
-
-                        const url = `/api/v1/tasks/${taskId}`;
-
-                        axios.delete(url)
-                            .then(response => {
-                                console.log(response.data);
-                                this.$emit('task-deleted', taskId);
-                                this.closeModal();
-                            })
-                            .catch(error => {
-                                console.log(error);
-                            });
-
-                            /*Swal.fire({
-                            title: "Sucesso!",
-                            text: "Sua tarefa foi deletada.",
-                            icon: "success"
-                            });*/
-
-                    }
+            axios.post(url)
+                .then(response => {
+                    console.log(response.data);
+                    this.$emit('task-updated', taskId);
+                    this.toggleSidebar();
+                })
+                .catch(error => {
+                    console.log(error);
                 });
+        },
 
-            },
+        uncompleteTask(taskId) {
+
+            const url = `/api/v1/tasks/${taskId}/uncomplete`;
+
+            axios.post(url)
+                .then(response => {
+                    console.log(response.data);
+                    this.isCompleted = false;
+                    this.$emit('task-updated', taskId);
+                    this.toggleSidebar();
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
+
+        deleteTask(taskId) {
+
+            Swal.fire({
+                    //title: "Tem certeza que deseja deletar esta tarefa?",
+                    text: "Tem certeza que deseja deletar esta tarefa?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Sim, deletar!",
+                    cancelButtonText: "Voltar",
+
+                }).then((result) => {
+
+                if (result.isConfirmed) {
+
+                    const url = `/api/v1/tasks/${taskId}`;
+
+                    axios.delete(url)
+                        .then(response => {
+                            console.log(response.data);
+                            this.$emit('task-deleted', taskId);
+                            this.closeModal();
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+
+                        /*Swal.fire({
+                        title: "Sucesso!",
+                        text: "Sua tarefa foi deletada.",
+                        icon: "success"
+                        });*/
+
+                }
+            });
+
+        },
+
     }
 };
 
