@@ -71,7 +71,9 @@
         },
         computed: {
 
-            ...mapState(['taskDetails']),
+            ...mapState('taskDetails', {
+                taskDetails: state => state.taskDetails
+            }),
 
             isCompleted() {
                 return this.status === 'completed';
@@ -192,21 +194,22 @@
                 this.$refs.closeModalBtn.click();
             },
 
-            ...mapActions(['setTaskDetails']),
+            ...mapActions('taskDetails', ['setTaskDetails']),
 
-                showTaskDetails() {
+            showTaskDetails() {
 
-                    const taskSidebar = document.getElementById('task-sidebar');
-                    const closeTaskSidebarIcon = document.getElementById('close-task-sidebar-icon');
+                const taskSidebar = document.getElementById('task-sidebar');
+                const closeTaskSidebarIcon = document.getElementById('close-task-sidebar-icon');
 
-                    this.setTaskDetails(this.task);
+                this.setTaskDetails(this.task);
 
-                    this.isSidebarExpanded = !this.isSidebarExpanded;
+                this.isSidebarExpanded = !this.isSidebarExpanded;
 
-                    taskSidebar.classList.toggle('expand');
-                    closeTaskSidebarIcon.classList.toggle('hide');
+                taskSidebar.classList.toggle('expand');
+                closeTaskSidebarIcon.classList.toggle('hide');
 
-                },
+            },
+
 
         },
 

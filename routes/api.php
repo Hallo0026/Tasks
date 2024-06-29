@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -33,6 +34,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('tasks', TaskController::class);
         Route::post('/tasks/{task}/complete', [TaskController::class, 'completeTask']);
         Route::post('/tasks/{task}/uncomplete', [TaskController::class, 'uncompleteTask']);
+
+        Route::apiResource('groups', GroupController::class);
+        Route::get('/groups/{group}/tasks', [GroupController::class, 'getTasks']);
 
         Route::get('/user/preferences', [UserController::class, 'getPreferences']);
         Route::post('/user/preferences', [UserController::class, 'updatePreferences']);

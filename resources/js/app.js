@@ -1,92 +1,50 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
-
 import './bootstrap';
 import { createApp } from 'vue';
 import { createStore } from 'vuex';
+import taskDetailsStore from './store/modules/taskDetails';
+import groupDetailsStore from './store/modules/groupDetails';
 
-const taskDetailsStore = createStore({
-    state() {
-        return {
-            taskDetails: {
-                id: null,
-                name: null,
-                description: null,
-                status: null,
-                task_group_id: null,
-                user_id: null,
-                task_group: {},  // Aqui você armazenará os detalhes do grupo
-                due_date: null,
-                created_at: null,
-                updated_at: null,
-            },
-        };
-    },
-    mutations: {
-        setTaskDetails(state, task) {
-            state.taskDetails = task;
-        },
-    },
-    actions: {
-        setTaskDetails({ commit }, task) {  // Corrigido para incluir o commit
-            commit('setTaskDetails', task);
-            console.log('Task details set');
-        },
-    },
-    getters: {
-        taskDetails(state) {
-            return state.taskDetails;
-        },
+const store = createStore({
+    modules: {
+        taskDetails: taskDetailsStore,
+        groupDetails: groupDetailsStore,
     },
 });
 
-/**
- * Next, we will create a fresh Vue application instance. You may then begin
- * registering components with the application instance so they are ready
- * to use in your application's views. An example is included for you.
- */
 
 const app = createApp({});
 
+app.use(store);
+
+
 import LoginComponent from './components/Login.vue';
 import TaskSidebar from './components/partials/TaskSidebar.vue';
+import GroupSidebar from './components/partials/GroupSidebar.vue';
 import Sidebar from './components/partials/Sidebar.vue';
 import TaskListComponent from './components/TaskList.vue';
+import GroupListComponent from './components/GroupList.vue';
 import CardComponent from './components/partials/Card.vue';
 import TaskComponent from './components/partials/Task.vue';
+import GroupComponent from './components/partials/Group.vue';
 import ModalComponent from './components/partials/Modal.vue';
 import CreateTaskModal from './components/partials/CreateTaskModal.vue';
+import CreateGroupModal from './components/partials/CreateGroupModal.vue';
 
 app.component('login-component', LoginComponent);
 app.component('sidebar-component', Sidebar);
 app.component('task-sidebar-component', TaskSidebar);
+app.component('group-sidebar-component', GroupSidebar);
 app.component('task-list-component', TaskListComponent);
+app.component('group-list-component', GroupListComponent);
 app.component('card-component', CardComponent);
 app.component('task-component', TaskComponent);
+app.component('group-component', GroupComponent);
 app.component('modal-component', ModalComponent);
 app.component('create-task-form-component', CreateTaskModal);
+app.component('create-group-form-component', CreateGroupModal);
 
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
+app.use(store);
 
-// Object.entries(import.meta.glob('./**/*.vue', { eager: true })).forEach(([path, definition]) => {
-//     app.component(path.split('/').pop().replace(/\.\w+$/, ''), definition.default);
-// });
 
-/**
- * Finally, we will attach the application instance to a HTML element with
- * an "id" attribute of "app". This element is included with the "auth"
- * scaffolding. Otherwise, you will need to add an element yourself.
- */
-
-app.use(taskDetailsStore);
 app.mount('#app');

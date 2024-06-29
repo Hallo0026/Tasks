@@ -13,16 +13,12 @@ class GroupController extends Controller
     public function index()
     {
         $groups = Group::all()->where('user_id', auth()->user()->id);
-        return response()->json($groups);
 
-    }
+        if ($groups->isEmpty()) {
+            return response()->json(['message' => 'No groups found'], 404);
+        }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return response()->json($groups, 200);
     }
 
     /**
@@ -30,23 +26,21 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $group = new Group();
+        $group->name = $request->name;
+        $group->description = $request->description;
+        $group->user_id = auth()->user()->id;
+        $group->save();
+        return response()->json($group);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Group $groups)
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Group $groups)
-    {
-        //
+        $group = Group::find($id)->where('user_id', auth()->user()->id);
+        return response()->json($group);
     }
 
     /**
@@ -54,7 +48,17 @@ class GroupController extends Controller
      */
     public function update(Request $request, Group $groups)
     {
-        //
+        $group = new Group();
+
+        if ($group->user_id !== auth()->user()->id) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $group->name = $request->name;
+        $group->description = $request->description;
+        $group->user_id = auth()->user()->id;
+        $group->update();
+        return response()->json($group);
     }
 
     /**
@@ -62,6 +66,19 @@ class GroupController extends Controller
      */
     public function destroy(Group $groups)
     {
-        //
+        $group = Group::find($groups->id);
+
+        if ($group->user_id !== auth()->user()->id) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $group->delete();
+
+        $response = [
+            'message' => 'Group deleted',
+            'id' => $group->id
+        ];
+
+        return response()->json($response, 200);
     }
 }

@@ -16,19 +16,9 @@
 
         <ul class="sidebar-nav">
 
-            <li class="sidebar-item">
-                <a href="#" class="sidebar-link" data-bs-toggle="modal" data-bs-target="#addTaskModal">
-                    <!--<PlusCircleOutlineIcon fillColor="#0c9d0c" :size="48"/>-->
-                    <PlusCircleOutlineIcon/>
-                    <span class="titulo-item-sidebar">Nova tarefa</span>
-                </a>
-            </li>
-
-
-            <li class="sidebar-item">
+            <!--<li class="sidebar-item">
 
                 <a href="#" class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" data-bs-target="#home" aria-expanded="false" aria-controls="home">
-                    <!--<img src="/storage/icons/home.svg">-->
                     <HomeIcon />
                     <span class="titulo-item-sidebar">Home</span>
                 </a>
@@ -42,11 +32,25 @@
                     </li>
                 </ul>
 
-            </li>
+            </li>-->
 
 
             <li class="sidebar-item">
-                <a href="#" class="sidebar-link">
+                <a href="/home" class="sidebar-link">
+                    <HomeIcon />
+                    <span class="titulo-item-sidebar">Início</span>
+                </a>
+            </li>
+
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+                    <PlusCircleOutlineIcon/>
+                    <span class="titulo-item-sidebar">Nova tarefa</span>
+                </a>
+            </li>
+
+            <li class="sidebar-item">
+                <a href="/groups" class="sidebar-link">
                     <ListStatusIcon />
                     <span class="titulo-item-sidebar">Grupos</span>
                 </a>
@@ -79,6 +83,35 @@
                     <span class="titulo-item-sidebar">Concluídas</span>
                 </a>
             </li>
+
+            <div class="sidebar-group-divider" v-if="groupFound"></div>
+
+            <li class="sidebar-item" v-if="groupFound" v-for="group in groups" :key="group.id">
+
+                <a :href="'/groups/' + group.id" class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" data-bs-target="#home" aria-expanded="false" aria-controls="home">
+                    <span class="titulo-item-sidebar">{{ group.name }}</span>
+                </a>
+
+                <ul id="home" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">
+                            <div class="titulo-item-sidebar">#</div>
+                        </a>
+                        <a href="#" class="sidebar-link">
+                            <div class="titulo-item-sidebar">#</div>
+                        </a>
+                        <a href="#" class="sidebar-link">
+                            <div class="titulo-item-sidebar">#</div>
+                        </a>
+                        <a href="#" class="sidebar-link">
+                            <div class="titulo-item-sidebar">#</div>
+                        </a>
+                    </li>
+                </ul>
+
+            </li>
+
+
 
         </ul>
 
@@ -118,6 +151,40 @@
             CalendarBlankIcon,
             CheckCircleOutlineIcon,
             Logout,
+        },
+
+        data() {
+            return {
+                groupFound: false,
+                groups: [],
+            };
+        },
+
+        mounted() {
+            this.getGroups();
+        },
+
+        methods: {
+
+            getGroups() {
+
+                axios.get('/api/v1/groups')
+                .then(response => {
+
+                    this.groupFound = true;
+                    this.groups = response.data;
+
+                })
+                .catch(error => {
+
+                    if ((error.response.status == 404) && (error.response.data.message == 'No groups found')) {
+                        console.log("No groups found");
+                        this.groupFound = false;
+                    }
+
+                });
+            },
+
         }
     }
 </script>

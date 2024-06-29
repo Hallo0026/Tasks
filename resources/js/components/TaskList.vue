@@ -47,7 +47,7 @@
         </template>
 
         <template v-slot:footer>
-            <span class="task-acorddion-add-task-button" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+            <span class="acorddion-add-button" data-bs-toggle="modal" data-bs-target="#addTaskModal">
                 <PlusIcon fillColor="green" style="vertical-align: bottom;"/>
                 Adicionar Tarefa
             </span>
@@ -77,7 +77,7 @@
         </template>
 
         <template v-slot:footer>
-            <span class="task-acorddion-add-task-button" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+            <span class="acorddion-add-button" data-bs-toggle="modal" data-bs-target="#addTaskModal">
                 <PlusIcon fillColor="green" style="vertical-align: bottom;"/>
                 Adicionar Tarefa
             </span>
@@ -114,12 +114,17 @@
 
     <div class="row" v-if="!tasksfound">
         <div class="col" style="margin: 20px 10px 10px 10px; padding-top: 4px;">
-            <h5>Quais são seus próximos objetivos?</h5>
 
-            <span class="task-acorddion-add-task-button p-0 ms-0" data-bs-toggle="modal" data-bs-target="#addTaskModal">
-                <PlusIcon fillColor="green" style="vertical-align: bottom;"/>
-                Adicionar Tarefa
-            </span>
+            <div class="cont-empty-page">
+
+                <h5>Quais são seus próximos objetivos?</h5>
+
+                <span class="acorddion-add-button p-0 ms-0" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+                    <PlusIcon fillColor="green" style="vertical-align: bottom;"/>
+                    Adicionar Tarefa
+                </span>
+
+            </div>
 
         </div>
     </div>
@@ -137,8 +142,8 @@
     </modal-component>
 
     <task-sidebar-component
-    @task-updated="updateTasks"
-    @task-deleted="updateTasks">
+        @task-updated="updateTasks"
+        @task-deleted="updateTasks">
     </task-sidebar-component>
 
 </template>
@@ -180,7 +185,6 @@
                         this.completedTasks = response.data.completed_tasks;
                         this.overdueTasks = response.data.overdue_tasks;
 
-                        console.log(this.tasks);
                     })
                     .catch(error => {
 

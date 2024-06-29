@@ -10,6 +10,14 @@
     background-color: #2b2b2b;
 }
 
+.cont-empty-page {
+    height: 40vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .default-background-color {
     background-color: rgb(219 219 219);
 }
@@ -38,7 +46,7 @@
     border-bottom-right-radius: 0 !important;
 }
 
-.task-acorddion-add-task-button {
+.acorddion-add-button {
     display: inline-block;
     padding: 0px 6px 6px 0px;
     margin: 0px 0px 8px 0px;

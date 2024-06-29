@@ -18,7 +18,7 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/js/sidebar.js'])
 
     <!-- Styles -->
-    @vite(['resources/css/app.css', 'resources/css/sidebar.css', 'resources/css/animations.css', 'resources/css/task_sidebar.css'])
+    @vite(['resources/css/app.css', 'resources/css/sidebar.css', 'resources/css/animations.css', 'resources/css/task_sidebar.css', 'resources/css/group_sidebar.css'])
 
 </head>
 <body>

@@ -29,4 +29,8 @@ Route::group(['middleware' => 'auth'], function () {
         return view('tasks.create');
     })->name('tasks.create');
 
+    Route::get('/groups', function() {
+        return view('groups.index');
+    })->name('groups.index');
+
 });

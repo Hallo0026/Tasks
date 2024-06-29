@@ -51,6 +51,7 @@
 </template>
 
 <script>
+
 import PlusCircleOutlineIcon from 'vue-material-design-icons/PlusCircleOutline.vue';
 import ViewGridOutlineIcon from 'vue-material-design-icons/ViewGridOutline.vue';
 import CloseCircleOutline from 'vue-material-design-icons/CloseCircleOutline.vue';
@@ -65,7 +66,10 @@ export default {
         CloseCircleOutline
     },
     computed: {
-        ...mapState(['taskDetails']),
+        ...mapState('taskDetails', {
+            taskDetails: state => state.taskDetails
+        }),
+
         taskTitle() {
             return this.taskDetails ? this.taskDetails.title : '';
         },
