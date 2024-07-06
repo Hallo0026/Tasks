@@ -25,7 +25,7 @@ use App\Http\Controllers\UserController;
 
 Route::prefix('auth/v1')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 });
 
 Route::middleware('auth:sanctum')->group(function () {

@@ -23,7 +23,7 @@
             <div class="task-description">{{ task.description }}</div>
 
             <div :class="['task-due-time', dueTimeClass]" v-if="!isCompleted">
-                {{ $formatDate(task.conclusion_date) }} {{ task.conclusion_time }}
+                {{ $formatDateBR(task.conclusion_date) }} {{ task.conclusion_time }}
             </div>
 
         </div>

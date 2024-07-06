@@ -34,7 +34,6 @@
 
             </li>-->
 
-
             <li class="sidebar-item">
                 <a href="/home" class="sidebar-link">
                     <HomeIcon />
@@ -111,12 +110,10 @@
 
             </li>
 
-
-
         </ul>
 
         <div class="sidebar-footer">
-            <a class="sidebar-link" href="logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <a class="sidebar-link" v-on:click="logout()" style="cursor: pointer;">
                 <Logout />
                 <span class="titulo-item-sidebar">Logout</span>
             </a>
@@ -185,6 +182,20 @@
                 });
             },
 
+            logout() {
+
+                axios.post('/api/auth/v1/logout')
+                .then(response => {
+                    console.log(response.data);
+                    window.location.href = '/login';
+                })
+                .catch(error => {
+                    console.log(error.response.data);
+                });
+
+            }
+
         }
+
     }
 </script>

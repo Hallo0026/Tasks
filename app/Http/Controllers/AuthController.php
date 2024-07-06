@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
+
     public function login(Request $request) {
 
         $credentials = $request->only('email', 'password');
@@ -25,9 +26,26 @@ class AuthController extends Controller
 
 
     public function logout(Request $request) {
-        $request->user()->tokens()->delete();
 
-        return response()->json(['message' => 'Logged out']);
+        $user = $request->user();
+
+        if ($user) {
+            // Encontra o token atual do usuário
+            //$currentToken = $user->tokens()->where('id', $user->currentAccessToken()->id)->first();
+            $user->tokens()->delete();
+
+            /*if ($currentToken) {
+                // Deleta o token atual
+                $currentToken->delete();
+            }*/
+
+            $request->session()->invalidate();
+
+            return response()->json(['message' => 'Logged out'], 200);
+        }
+
+        return response()->json(['message' => 'User not authenticated'], 401);
     }
+
 
 }

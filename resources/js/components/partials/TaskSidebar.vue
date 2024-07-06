@@ -20,14 +20,13 @@
 
             <a href="#" class="task-sidebar-link">
 
-                <div>
-                    <input
-                    class="form-check-input task-checkbox"
-                    type="checkbox"
-                    :checked="isCompleted"
-                    @click="toggleTaskCompletion">
-                    <input type="text" class="input-text-task-sidebar task-title" v-model="taskTitle">
-                </div>
+                <input
+                class="form-check-input task-checkbox"
+                type="checkbox"
+                :checked="isCompleted"
+                @click="toggleTaskCompletion">
+                <input type="text" class="input-text-task-sidebar task-title" v-model="taskTitle">
+
 
                 <div v-if="taskDescription">
                     <input type="text" class="input-text-task-sidebar task-description" v-model="taskDescription">
@@ -37,7 +36,11 @@
                 </div>
 
                 <div v-if="taskConclusionDate">
-                    <input type="text" class="input-text-task-sidebar task-description" v-model="$taskConclusionDate">
+                    <input type="text" class="input-text-task-sidebar task-description" v-model="taskConclusionDate">
+                </div>
+
+                <div v-if="taskConclusionTime">
+                    <input type="text" class="input-text-task-sidebar task-description" v-model="taskConclusionTime">
                 </div>
 
                 <span class="titulo-item-sidebar"></span>
@@ -78,6 +81,9 @@ export default {
         },
         taskConclusionDate() {
             return this.taskDetails ? this.taskDetails.conclusion_date : '';
+        },
+        taskConclusionTime() {
+            return this.taskDetails ? this.taskDetails.conclusion_time : '';
         },
         taskStatus() {
             return this.taskDetails ? this.taskDetails.status : '';
