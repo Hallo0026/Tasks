@@ -3,9 +3,32 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class AuthController extends Controller
 {
+
+    public function register(Request $request) {
+
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:3',
+            'passwordConfirmation' => 'required|string|min:3|same:password'
+        ]);
+
+        $validatedData['password'] = bcrypt($validatedData['password']);
+
+        $user = User::create($validatedData);
+
+        $access_token = $user->createToken('access_token');
+
+        return response()->json([
+            'message' => 'User created',
+            'token' => $access_token->plainTextToken
+        ], 201);
+    }
+
 
     public function login(Request $request) {
 

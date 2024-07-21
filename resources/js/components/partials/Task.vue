@@ -236,6 +236,9 @@
     .task:hover {
         background-color: #313131;
         border-radius: 8px;
+        -webkit-box-shadow: 0px 0px 8px 0px rgba(36,36,36,1);
+-moz-box-shadow: 0px 0px 8px 0px rgba(36,36,36,1);
+box-shadow: 0px 0px 8px 0px rgba(36,36,36,1);
     }
 
     .task-title {

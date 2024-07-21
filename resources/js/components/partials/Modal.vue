@@ -1,10 +1,10 @@
 <template>
     <!-- Modal -->
-    <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
+    <div class="modal fade" :id="modalId" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="addTaskModalLabel">
+                    <h1 class="modal-title fs-5" id="ModalLabel">
                         <slot name="title"></slot>
                     </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -25,6 +25,7 @@
 <script>
 export default {
     name: 'ModalComponent',
+    props: ['modalId'],
 };
 </script>
 

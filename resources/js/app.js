@@ -17,6 +17,7 @@ const app = createApp({});
 app.use(store);
 
 
+import RegisterComponent from './components/Register.vue';
 import LoginComponent from './components/Login.vue';
 import TaskSidebar from './components/partials/TaskSidebar.vue';
 import GroupSidebar from './components/partials/GroupSidebar.vue';
@@ -30,6 +31,7 @@ import ModalComponent from './components/partials/Modal.vue';
 import CreateTaskModal from './components/partials/CreateTaskModal.vue';
 import CreateGroupModal from './components/partials/CreateGroupModal.vue';
 
+app.component('register-component', RegisterComponent);
 app.component('login-component', LoginComponent);
 app.component('sidebar-component', Sidebar);
 app.component('task-sidebar-component', TaskSidebar);

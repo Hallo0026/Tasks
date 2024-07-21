@@ -24,6 +24,7 @@ use App\Http\Controllers\UserController;
 
 
 Route::prefix('auth/v1')->group(function () {
+    Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 });
@@ -31,6 +32,7 @@ Route::prefix('auth/v1')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('v1')->group(function () {
+
         Route::apiResource('tasks', TaskController::class);
         Route::post('/tasks/{task}/complete', [TaskController::class, 'completeTask']);
         Route::post('/tasks/{task}/uncomplete', [TaskController::class, 'uncompleteTask']);
@@ -40,6 +42,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('/user/preferences', [UserController::class, 'getPreferences']);
         Route::post('/user/preferences', [UserController::class, 'updatePreferences']);
+
     });
 
 });

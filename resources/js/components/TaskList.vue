@@ -130,7 +130,7 @@
     </div>
 
 
-    <modal-component>
+    <modal-component modalId="addTaskModal">
 
         <template v-slot:title>
             Adicionar tarefa

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->boolean('completed')->default(false);
-            $table->date('conclusion_date');
+            $table->date('conclusion_date')->nullable();
             $table->time('conclusion_time')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('task_group_id')->nullable()->constrained()->onDelete('cascade');
@@ -30,10 +30,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('tasks', function (Blueprint $table) {
+        /*Schema::table('tasks', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
             $table->dropForeign(['group_id']);
-        });
+        });*/
         Schema::dropIfExists('tasks');
     }
 

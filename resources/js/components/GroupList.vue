@@ -46,13 +46,13 @@
     </div>
 
 
-    <modal-component>
+    <modal-component modalId="addGroupModal">
 
         <template v-slot:title>
             Adicionar Grupo
         </template>
         <template v-slot:body>
-            <create-group-form-component @submit="handleFormSubmit" @group-created="updateGroups"></create-group-form-component>
+            <create-group-form-component @submit="handleFormSubmit" @group-created="updateGroups()"></create-group-form-component>
         </template>
 
     </modal-component>
@@ -74,15 +74,18 @@
         components: {
             PlusIcon
         },
+
         data() {
             return {
                 groupFound: false,
                 groups: [],
             };
         },
+
         mounted() {
             this.getGroups();
         },
+
         methods: {
 
             getGroups() {
@@ -113,7 +116,7 @@
 
             },
 
-
         }
     };
+
 </script>
